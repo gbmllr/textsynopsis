@@ -1,12 +1,21 @@
+
+
 <div class="container">
 
-<hr>
-
-      <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4"></div>
-      </div>
 
 
-    </div>
+  <div *ngFor="let para of data.ausgaben[1]; index as i" class="row">
+  <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(this.data.ausgaben[0][i])"></div>
+
+    <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(this.data.ausgaben[1][i])"></div>
+
+  <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(this.data.ausgaben[2][i])"></div>
+  </div>
+
+
+
+
+
+</div>
+
+
