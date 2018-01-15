@@ -2,7 +2,14 @@
 
 <div class="container">
 
+	<div *ngFor="let para of data.ausgaben[0]; index as j" class="row">
+		<div class="col-md-4" [innerHTML]="markUpParaDiff(this.parseJsonParaToHtmlPara(this.data.ausgaben[0][j]),this.parseJsonParaToHtmlPara(this.data.ausgaben[1][j]))[0]">
+		</div>
 
+		<div class="col-md-4" [innerHTML]="markUpParaDiff(this.parseJsonParaToHtmlPara(this.data.ausgaben[0][j]),this.parseJsonParaToHtmlPara(this.data.ausgaben[1][j]))[1]">>
+		</div>
+
+	</div>
 
   <div *ngFor="let para of data.ausgaben[1]; index as i" class="row">
   <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(this.data.ausgaben[0][i])"></div>
