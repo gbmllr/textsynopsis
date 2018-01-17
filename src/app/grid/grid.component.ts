@@ -25,18 +25,44 @@ class JsonPara {
 })
 export class GridComponent {
 
-  	data = textJson.data;
-    results0_1 = this.compareParas(0,1);
-    results0_2 = this.compareParas(0,2);
-    results1_2 = this.compareParas(1,2);
+
+//initializations
+//json with the raw text; 0 = 1817-Ausgabe, 1= 1827, 2=1830
+  	data = textJson.data; //old
+    versions = textJson.data.ausgaben;
+
+//the finished html strings go here
+    parsed0 = [];
+    parsed1 = [];
+    parsed2 = [];
+
+    //array with html strings of the comparison between version 0 and 1
+    parsed0_1 = {
+       left: [],
+       right: []
+      };
+    parsed0_2 = {
+      left: [],
+      right: []
+      };   
+    parsed1_2 = {
+       left: [],
+       right: []
+    };
+
+    public comparison = this.parsed0_2;
+
 
 
     public parseJsonParaToHtmlPara(jsonPara: JsonPara) {
+      //takes a structured json paragraph and transforms it into a html string
       return  "<h2>" + jsonPara.title + "</h2>\n <h3>" + jsonPara.subtitle +"</h3>\n <p>" + ((jsonPara.paranumber === '') ? '' : ('§ ' + jsonPara.paranumber + ': ' + jsonPara.content)) + "</p>\n<p>" + (jsonPara.anmerkung === "" ? "" : "Anmerkung: " + jsonPara.anmerkung) + "</p>";
 	}
 
 
    markUpParaDiff(leftIn,rightIn) {
+     //uses wordDiff to compare two structured single fields. produces an array with the left and the 
+     //right field-result, with the additions relative to the other one marked
     const diff = wordDiff.diffString(leftIn, rightIn);
     var leftOut = "";
     var rightOut = "";
@@ -53,7 +79,7 @@ export class GridComponent {
     }
 
     compareParas(a:number,b:number) {
-
+// uses markUpParaDiff to compare two entire paragraphs. result is an array with two JsonParas
         const results = {
           left : [],
           right : []
@@ -74,18 +100,39 @@ export class GridComponent {
       }
     return results
     }
+
+    parseVersions() {
+      //compile all 9 versions to be viewed, as arrays of html strings
+         const comp0_1 = this.compareParas(0,1);
+         const comp0_2 = this.compareParas(0,2);
+         const comp1_2 = this.compareParas(1,2);
+         console.log(comp0_1);
+          for (let i in this.versions[0]) {
+            this.parsed0[i] = this.parseJsonParaToHtmlPara(this.versions[0][i]);
+            this.parsed1[i] = this.parseJsonParaToHtmlPara(this.versions[1][i]);
+            this.parsed2[i] = this.parseJsonParaToHtmlPara(this.versions[2][i]);
+           this.parsed0_1.left[i] = this.parseJsonParaToHtmlPara(comp0_1.left[i]);
+            this.parsed0_1.right[i] = this.parseJsonParaToHtmlPara(comp0_1.right[i]);
+           this.parsed0_2.left[i] = this.parseJsonParaToHtmlPara(comp0_2.left[i]);
+            this.parsed0_2.right[i] = this.parseJsonParaToHtmlPara(comp0_2.right[i]);
+           this.parsed1_2.left[i] = this.parseJsonParaToHtmlPara(comp1_2.left[i]);
+            this.parsed1_2.right[i] = this.parseJsonParaToHtmlPara(comp1_2.right[i]);
+
 }
-const grid = new GridComponent();
-console.log(grid.results0_1);
-console.log(grid.data.ausgaben[0])
-  
+    }
+
+constructor() {
+  //on component generation, prepare all versions
+  this.parseVersions();
+}
+
+}
 
 
 
 
 
-//   ngOnInit() {
-//   }
+
 
 //     // this.getJsonService.list().subscribe(data => this.data = data);
 //     //this is a working way to subscribe to an external service that sends the

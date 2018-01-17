@@ -3,10 +3,10 @@
 <div class="container">
 
 	<div *ngFor="let para of data.ausgaben[0]; index as j" class="row">
-		<div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(results0_1.left[j])">
+		<div class="col-md-4" [innerHTML]="this.comparison.left[j]">
 		</div>
 
-		<div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(results0_1.right[j])">
+		<div class="col-md-4" [innerHTML]="this.comparison.right[j]">
 		</div>
 
 	</div>
