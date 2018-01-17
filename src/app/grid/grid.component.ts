@@ -7,7 +7,7 @@ import * as textJson from '../../assets/data/natur';
 
 import * as wordDiff from 'word-diff';
 
-export class JsonPara {
+class JsonPara {
     title: string;
     subtitle: string;
     paranumber: string;
@@ -15,8 +15,6 @@ export class JsonPara {
     anmerkung: string;
 
     }
-
-
 
 
   
@@ -28,38 +26,59 @@ export class JsonPara {
 export class GridComponent {
 
   	data = textJson.data;
+    results0_1 = this.compareParas(0,1);
+    results0_2 = this.compareParas(0,2);
+    results1_2 = this.compareParas(1,2);
 
-    markUpParaDiff(leftIn,rightIn) {
-      const diff = wordDiff.diffString(leftIn, rightIn);
-      var leftOut = "";
-      var rightOut = "";
-    for (let part of diff) {
-      if (part.hasOwnProperty('add')) {
-      leftOut = leftOut + '<mark>' + part.remove + '</mark>';
-      rightOut = rightOut + '<mark>' + part.add + '</mark>'; //<ins>
-        } else {
-          leftOut = leftOut + part.text;
-          rightOut= rightOut + part.text; 
-        }
-      }
-      console.log([leftOut,rightOut]);
-      return [leftOut, rightOut]
-    }
 
-    parseJsonParaToHtmlPara(jsonPara: JsonPara) {
+    public parseJsonParaToHtmlPara(jsonPara: JsonPara) {
       return  "<h2>" + jsonPara.title + "</h2>\n <h3>" + jsonPara.subtitle +"</h3>\n <p>" + ((jsonPara.paranumber === '') ? '' : ('§ ' + jsonPara.paranumber + ': ' + jsonPara.content)) + "</p>\n<p>" + (jsonPara.anmerkung === "" ? "" : "Anmerkung: " + jsonPara.anmerkung) + "</p>";
 	}
 
 
-    
-    htmlParas = [];
+   markUpParaDiff(leftIn,rightIn) {
+    const diff = wordDiff.diffString(leftIn, rightIn);
+    var leftOut = "";
+    var rightOut = "";
+    for (let part of diff) {
+    if (part.hasOwnProperty('add')) {
+    leftOut = leftOut + '<mark>' + part.remove + '</mark>';
+    rightOut = rightOut + '<mark>' + part.add + '</mark>'; //<ins>
+      } else {
+        leftOut = leftOut + part.text;
+        rightOut= rightOut + part.text; 
+      }
+    }
+    return [leftOut, rightOut]
+    }
 
-// for (let ausgabe in this.data.ausgaben) {
-//   htmlParas.push(ausgabe);//this.parseJsonParaToHtmlPara(this.data.ausgaben[ausgabe][0]));
-// }
-//this for loop produces an error
-//todo: implement a function that takes an index i and outputs an array with the 
-//three parsed html paragraphs in row i (one string for each column)
+    compareParas(a:number,b:number) {
+
+        const results = {
+          left : [],
+          right : []
+        };
+
+      const aVersion = textJson.data.ausgaben[a];
+      const bVersion = textJson.data.ausgaben[b];
+      for (let i in aVersion) {
+
+        results.left[i] = new JsonPara();
+        results.right[i] = new JsonPara();
+        [results.left[i].title, results.right[i].title] = this.markUpParaDiff(aVersion[i]['title'], bVersion[i]['title']) ;
+        [results.left[i].subtitle, results.right[i].subtitle] = this.markUpParaDiff(aVersion[i]['subtitle'], bVersion[i]['subtitle']) ;
+        [results.left[i].paranumber, results.right[i].paranumber] = this.markUpParaDiff(aVersion[i]['paranumber'], bVersion[i]['paranumber']) ;
+        [results.left[i].content, results.right[i].content] = this.markUpParaDiff(aVersion[i]['content'], bVersion[i]['content']) ;
+        [results.left[i].anmerkung, results.right[i].anmerkung] = this.markUpParaDiff(aVersion[i]['title'], bVersion[i]['title']) ;
+        
+      }
+    return results
+    }
+}
+const grid = new GridComponent();
+console.log(grid.results0_1);
+console.log(grid.data.ausgaben[0])
+  
 
 
 
@@ -73,5 +92,5 @@ export class GridComponent {
 //     // Text-as-json in per Observable. It is not necessary because a json can be imported directly
 //     // the import statement
  
- }
+
 
