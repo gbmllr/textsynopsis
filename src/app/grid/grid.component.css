@@ -25,3 +25,8 @@ hr {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+
+mark {
+  background-color: blue;
+  border: solid black;
+}

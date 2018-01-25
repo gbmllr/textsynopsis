@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 
 import { GetJsonService } from '../../assets/services/get-json.service';
+import { DataService } from '../../assets/services/data.service';
 import * as textJson from '../../assets/data/natur';
 
 import * as wordDiff from 'word-diff';
@@ -23,13 +24,27 @@ class JsonPara {
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
-export class GridComponent {
+export class GridComponent implements OnInit {
 
 
 //initializations
 //json with the raw text; 0 = 1817-Ausgabe, 1= 1827, 2=1830
-  	data = textJson.data; //old
+
     versions = textJson.data.ausgaben;
+    message: string;
+
+    constructor(private data: DataService) { //make DataService available in this component
+  //on component generation, prepare all versions
+  this.parseVersions();
+
+}
+
+ngOnInit() {
+  this.data.currentMessage.subscribe(message => this.message = message);
+  console.log(this.message)
+}
+
+
 
 //the finished html strings go here
     parsed0 = [];
@@ -41,10 +56,12 @@ export class GridComponent {
        left: [],
        right: []
       };
+      //..and 0 and 2
     parsed0_2 = {
       left: [],
       right: []
       };   
+      //.. and 1 and 2
     parsed1_2 = {
        left: [],
        right: []
@@ -54,9 +71,10 @@ export class GridComponent {
 
 
 
+
     public parseJsonParaToHtmlPara(jsonPara: JsonPara) {
-      //takes a structured json paragraph and transforms it into a html string
-      return  "<h2>" + jsonPara.title + "</h2>\n <h3>" + jsonPara.subtitle +"</h3>\n <p>" + ((jsonPara.paranumber === '') ? '' : ('§ ' + jsonPara.paranumber + ': ' + jsonPara.content)) + "</p>\n<p>" + (jsonPara.anmerkung === "" ? "" : "Anmerkung: " + jsonPara.anmerkung) + "</p>";
+      //takes a structured json paragraph and transforms it into a html string with appropriate markup
+      return  "<h2>" + jsonPara.title + "</h2>\n <h3>" + jsonPara.subtitle +"</h3>\n <p>" + (((jsonPara.paranumber === "" ) || ( jsonPara.paranumber === "<b></b>" )) ? "" : ("§ " + jsonPara.paranumber + ": " + jsonPara.content)) + "</p>\n<p>" + (jsonPara.anmerkung === "" ? "" : "Anmerkung: " + jsonPara.anmerkung) + "</p>";
 	}
 
 
@@ -68,8 +86,8 @@ export class GridComponent {
     var rightOut = "";
     for (let part of diff) {
     if (part.hasOwnProperty('add')) {
-    leftOut = leftOut + '<mark>' + part.remove + '</mark>';
-    rightOut = rightOut + '<mark>' + part.add + '</mark>'; //<ins>
+    leftOut = leftOut + '<b>' + part.remove + '</b>';
+    rightOut = rightOut + '<b>' + part.add + '</b>'; //<ins>
       } else {
         leftOut = leftOut + part.text;
         rightOut= rightOut + part.text; 
@@ -106,7 +124,7 @@ export class GridComponent {
          const comp0_1 = this.compareParas(0,1);
          const comp0_2 = this.compareParas(0,2);
          const comp1_2 = this.compareParas(1,2);
-         console.log(comp0_1);
+
           for (let i in this.versions[0]) {
             this.parsed0[i] = this.parseJsonParaToHtmlPara(this.versions[0][i]);
             this.parsed1[i] = this.parseJsonParaToHtmlPara(this.versions[1][i]);
@@ -121,23 +139,12 @@ export class GridComponent {
 }
     }
 
-constructor() {
-  //on component generation, prepare all versions
-  this.parseVersions();
-}
+
 
 }
 
 
 
-
-
-
-
-//     // this.getJsonService.list().subscribe(data => this.data = data);
-//     //this is a working way to subscribe to an external service that sends the
-//     // Text-as-json in per Observable. It is not necessary because a json can be imported directly
-//     // the import statement
  
 
 

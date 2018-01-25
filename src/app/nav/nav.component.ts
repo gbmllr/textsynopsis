@@ -1,5 +1,7 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, OnInit, NgModule } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DataService } from '../../assets/services/data.service';
+
 
 
 @Component({
@@ -7,16 +9,31 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
 	public modalRef: BsModalRef;
+	//message: string;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private data: DataService) { 
+  	//this.data.changeMessage("bla");
+  	//this.changeMessage("blu");
 
-public openModal(template: TemplateRef<any>) {
-	this.modalRef = this.modalService.show(template);
-}
+  }
+
+
 
   ngOnInit() {
+  	//this.data.currentMessage.subscribe(message => this.message = message)
+  	//subscribe to the data service observable
   }
+
+changeMessage() {
+  this.data.changeMessage("bla");
+}
+
+logMessage() {
+	console.log(this.data.currentMessage)
+}
+
+
 
 }

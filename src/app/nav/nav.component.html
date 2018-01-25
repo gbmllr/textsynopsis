@@ -4,31 +4,18 @@
             <a class="navbar-brand"><img src="assets/img/ngx-bootstrap.svg" class="logo"></a>
             <span class="navbar-brand">supersexy nav</span>
         </div>
-        <!-- <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Link</a></li>
-            <li dropdown>
-                <a dropdownToggle class="dropdown-toggle" role="button">Dropdown <span class="caret"></span></a>
-                <ul *dropdownMenu class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">One more separated link</a></li>
-                </ul>
-            </li>
-        </ul> -->
+
     </div>
 </nav>
 
 <div class="container">
+      <button (click)="logMessage()">
+    </button>
 
     <button type="button" class="btn btn-primary" tooltip="Show all three texts without comparison markup.">
     Overview
     </button>
-    <button type="button" class="btn btn-primary" tooltip="Show the differences between the 1817 and 1827 versions.">
+    <button type="button" class="btn btn-primary" (click)="changeMessage()" tooltip="Show the differences between the 1817 and 1827 versions.">
     1817 vs 1827
     </button>
     <button type="button" class="btn btn-primary" tooltip="Show the differences between the 1817 and 1830 versions.">
