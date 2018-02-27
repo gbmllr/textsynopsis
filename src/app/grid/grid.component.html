@@ -12,7 +12,7 @@
 
 	</div>
 
-  <div *ngFor="let para of versions[1]; index as i" class="row">
+  <div *ngFor="let para of versions[0]; index as i" class="row">
   <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(versions[0][i])"></div>
 
     <div class="col-md-4" [innerHTML]="this.parseJsonParaToHtmlPara(versions[1][i])"></div>

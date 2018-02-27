@@ -9,21 +9,20 @@
 </nav>
 
 <div class="container">
-      <button (click)="logMessage()">
-    </button>
+     
+  
 
-    <button type="button" class="btn btn-primary" tooltip="Show all three texts without comparison markup.">
-    Overview
-    </button>
-    <button type="button" class="btn btn-primary" (click)="changeMessage()" tooltip="Show the differences between the 1817 and 1827 versions.">
+    <a routerLink="/overview" type="button" class="btn btn-primary" tooltip="Show all three texts without comparison markup.">
+    Overview</a>
+    <a routerLink="compare/1817-1827" type="button" class="btn btn-primary" tooltip="Show the differences between the 1817 and 1827 versions.">
     1817 vs 1827
-    </button>
-    <button type="button" class="btn btn-primary" tooltip="Show the differences between the 1817 and 1830 versions.">
+    </a>
+    <a routerLink="compare/1817-1830" type="button" class="btn btn-primary" tooltip="Show the differences between the 1817 and 1830 versions.">
     1817 vs 1830
-    </button>
-    <button type="button" class="btn btn-primary" tooltip="Show the differences between the 1827 and 1830 versions.">
+    </a>
+    <a routerLink="compare/1827-1830" type="button" class="btn btn-primary" tooltip="Show the differences between the 1827 and 1830 versions.">
     1827 vs 1830
-    </button>
+    </a>
 
 <!--    <button type="button" class="btn btn-info" (click)="openModal(template)">Create template modal</button> -->
 

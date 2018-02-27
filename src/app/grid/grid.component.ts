@@ -7,15 +7,8 @@ import { DataService } from '../../assets/services/data.service';
 import * as textJson from '../../assets/data/natur';
 
 import * as wordDiff from 'word-diff';
+import { JsonPara } from '../JsonPara';
 
-class JsonPara {
-    title: string;
-    subtitle: string;
-    paranumber: string;
-    content: string; 
-    anmerkung: string;
-
-    }
 
 
   
@@ -28,7 +21,7 @@ export class GridComponent implements OnInit {
 
 
 //initializations
-//json with the raw text; 0 = 1817-Ausgabe, 1= 1827, 2=1830
+//json with the text data; 0 = 1817-Ausgabe, 1= 1827, 2=1830
 
     versions = textJson.data.ausgaben;
     message: string;
@@ -41,7 +34,7 @@ export class GridComponent implements OnInit {
 
 ngOnInit() {
   this.data.currentMessage.subscribe(message => this.message = message);
-  console.log(this.message)
+  let comparison = this.message;
 }
 
 
@@ -97,7 +90,7 @@ ngOnInit() {
     }
 
     compareParas(a:number,b:number) {
-// uses markUpParaDiff to compare two entire paragraphs. result is an array with two JsonParas
+// uses markUpParaDiff to compare two entire paragraphs. result is a dict with two arrays of JsonParas
         const results = {
           left : [],
           right : []
